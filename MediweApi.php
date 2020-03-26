@@ -60,17 +60,33 @@ class MediweApi {
       $connectionURL .= '&entity=' . $acceptedApiRequests[$apiFunction];
       $connectionURL .= '&action=' . $this->getApiAction();
 
-      // add extra parameters
-      if ($paramsQueryString != '') {
-        $connectionURL .= "&$paramsQueryString";
-      }
-
       // do the curl call
       $curl = curl_init();
-      curl_setopt_array($curl, [
-        CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL => $connectionURL,
-      ]);
+      if ($this->getApiFunction() == 'GET') {
+        // add extra parameters to the url
+        if ($paramsQueryString != '') {
+          $connectionURL .= "&$paramsQueryString";
+        }
+
+        curl_setopt_array($curl, [
+          CURLOPT_POST => 1,
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_URL => $connectionURL,
+        ]);
+      }
+      else {
+        $optionsArray = [
+          CURLOPT_RETURNTRANSFER => 1,
+          CURLOPT_URL => $connectionURL,
+        ];
+
+        // add extra parameters to the array
+        if ($paramsQueryString != '') {
+          $optionsArray[CURLOPT_POSTFIELDS] = $paramsQueryString;
+        }
+
+        curl_setopt_array($curl, $optionsArray);
+      }
       $request = new stdClass();
       $response = curl_exec($curl);
 
