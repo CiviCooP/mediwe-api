@@ -82,6 +82,9 @@ class MediweApi {
       if ($request->response === FALSE) {
         throw new Exception(curl_error($curl), curl_errno($curl));
       }
+      elseif (array_key_exists('is_error', $request->response) && $request->response['is_error'] == 1) {
+        throw new Exception($request->response['error_message'], 1);
+      }
 
       // no error, close
       curl_close($curl);
