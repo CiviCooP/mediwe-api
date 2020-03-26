@@ -62,20 +62,20 @@ class MediweApi {
 
       // do the curl call
       $curl = curl_init();
-      if ($this->getApiAction() == 'GET') {
+      if ($this->requestMethod == 'GET') {
         // add extra parameters to the url
         if ($paramsQueryString != '') {
           $connectionURL .= "&$paramsQueryString";
         }
 
         curl_setopt_array($curl, [
-          CURLOPT_POST => 1,
           CURLOPT_RETURNTRANSFER => 1,
           CURLOPT_URL => $connectionURL,
         ]);
       }
       else {
         $optionsArray = [
+          CURLOPT_POST => 1,
           CURLOPT_RETURNTRANSFER => 1,
           CURLOPT_URL => $connectionURL,
         ];
