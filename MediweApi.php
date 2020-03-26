@@ -6,8 +6,6 @@ class MediweApi {
   private $server;
   private $body;
   private $requestMethod = 'GET';
-  private $api_key = '';
-  private $key = '';
 
   public function __construct($server, $body) {
     $this->server = $server;
@@ -22,8 +20,6 @@ class MediweApi {
 
     // check if they correspond with stored username and pwd
     if ($userName == USG_USER && $password == USG_PASSWORD) {
-      $this->api_key = $userName;
-      $this->key = $password;
       return TRUE;
     }
     else {
@@ -76,14 +72,16 @@ class MediweApi {
         CURLOPT_URL => $connectionURL,
       ]);
       $request = new stdClass();
-      $request->response = curl_exec($curl);
+      $response = curl_exec($curl);
 
       // handle errors
-      if ($request->response === FALSE) {
+      if ($response === FALSE) {
         throw new Exception(curl_error($curl), curl_errno($curl));
       }
-      elseif (array_key_exists('is_error', $request->response) && $request->response['is_error'] == 1) {
-        throw new Exception($request->response['error_message'], 1);
+
+      $request->response = json_decode($response);
+      if (property_exists($request->response, 'is_error') && $request->response->is_error == 1) {
+        throw new Exception($request->response->error_message, 1);
       }
 
       // no error, close
@@ -94,7 +92,7 @@ class MediweApi {
   }
 
   private function getConnectionURL() {
-    $url = CIVI_URL . "?json=1&version=3&api_key={$this->api_key}&key={$this->key}";
+    $url = CIVI_URL . '?json=1&version=3&api_key=' . API_KEY . '&key=' . SITE_KEY;
     return $url;
   }
 
