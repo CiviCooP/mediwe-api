@@ -73,7 +73,7 @@ class MediweApi {
       $curl = curl_init();
       curl_setopt_array($curl, [
         CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL => 'http://testcURL.com/?item1=value&item2=value2',
+        CURLOPT_URL => $connectionURL,
       ]);
       $request = new stdClass();
       $request->response = curl_exec($curl);
@@ -92,6 +92,7 @@ class MediweApi {
 
   private function getConnectionURL() {
     $url = CIVI_URL . "json=1&version=3&api_key={$this->api_key}&key={$this->key}";
+    return $url;
   }
 
   private function getApiFunction() {
