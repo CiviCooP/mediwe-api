@@ -62,7 +62,7 @@ class MediweApi {
 
       // do the curl call
       $curl = curl_init();
-      if ($this->getApiFunction() == 'GET') {
+      if ($this->getApiAction() == 'GET') {
         // add extra parameters to the url
         if ($paramsQueryString != '') {
           $connectionURL .= "&$paramsQueryString";
