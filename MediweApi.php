@@ -11,6 +11,7 @@ class MediweApi {
   public function __construct($server, $body, $get) {
     $this->server = $server;
     $this->body = $body;
+    $this->get = $get;
     $this->requestMethod = $server['REQUEST_METHOD'];
   }
 
