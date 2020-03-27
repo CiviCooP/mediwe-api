@@ -115,7 +115,7 @@ class MediweApi {
   }
 
   private function getConnectionURL() {
-    $url = CIVI_URL . '?json=1&version=3&api_key=' . API_KEY . '&key=' . SITE_KEY;
+    $url = CIVI_URL . '?json=1&version=3&api_key=' . API_KEY . '&key=' . SITE_KEY . '&sequential=1';
     return $url;
   }
 
