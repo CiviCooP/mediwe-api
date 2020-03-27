@@ -8,7 +8,7 @@ $responseCode = '';
 
 try {
   $jsonBody = file_get_contents('php://input');
-  $mediweApi = new MediweApi($_SERVER, json_decode($jsonBody));
+  $mediweApi = new MediweApi($_SERVER, json_decode($jsonBody), $_GET);
   if ($mediweApi->isAuthorized()) {
     // process the request
     $response = $mediweApi->processRequest();
